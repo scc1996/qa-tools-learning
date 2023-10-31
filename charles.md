@@ -1,9 +1,9 @@
-charles 使用手册
+# charles 使用手册
 1. charles和whistle的区别
 （1）charles有客户端软件，whistle是浏览器里的插件
 （2）charles可以抓https的请求，whistle抓不到https的请求
 
-2. charles配置流程
+3. charles配置流程
 （1）https://www.charlesproxy.com/ -- 官网下载软件
 （2）下载完成后安装即可使用
 （3）安装证书help -- SSL Proxying -- Install Charles Root Certification -- 安装完成后，右键，显示完整信息，信任证书
