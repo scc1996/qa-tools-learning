@@ -1,3 +1,23 @@
+# 暴力解法，将最长子串存储下来，依次遍历
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if len(s) == 0 or len(s) == 1:
+            return len(s)
+        
+        max_str = ""
+        for i in range(0, len(s)):
+            temp_str = s[i]
+            for j in range(i, len(s)):
+                if i == j: continue
+                if s[j] not in temp_str:
+                    temp_str = temp_str + s[j]
+                else:
+                    break
+            if len(max_str) < len(temp_str):
+                max_str = temp_str
+        return len(max_str)
+
+
 # 暴力解法，遍历O(n2)的时间复杂度
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
