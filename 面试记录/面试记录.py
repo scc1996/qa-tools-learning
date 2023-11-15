@@ -80,6 +80,11 @@ nginx
 （4）查看设备：adb devices
 
 7. linux命令（1）查看top10进程（2）杀掉进程（3）查看带有关键字的进程（4）查看日志（5）日志查询关键字
+（1）top / ps -aux | head -n
+（2）kill -9 pid
+（3）ps -ef | grep 关键字 | grep -v grep
+（4）cat xxx -- 一次查看整个文件；less 与 more 类似，但使用 less 可以随意浏览文件，而 more 仅能向前移动，却不能向后移动，而且 less 在查看之前不会加载整个文件。
+（5）grep  cat test1.txt | grep -f key.log
 8. 数据库（1）事务的作用（2）建表语句（3）去重关键字或方法（4）having和where的区别（5）两表联查（6）增删改查
 9. 网络状态码301、302、404、502
 （1）301: Moved Permanently 永久移动。请求的资源已被永久的移动到新 URI，返回信息会包括新的 URI，浏览器会自动定向到新 URI。今后任何新的请求都应使用新的 URI 代替。
@@ -91,6 +96,8 @@ nginx
 
 10.接口性能：（1）qps和tps是什么（2）响应时间
 11.python成员、对象、装饰器、继承
+
+
 12.tcp/ip协议：
 （1）tcp/ip模型：应用层 - 传输层 - 网络层 - 数据链路层 - 物理层
 （2）tcp/ip是协议促组，其中应用层常用协议http/https；传输层tcp/udp；网络层ip（ipv4和ipv6）
