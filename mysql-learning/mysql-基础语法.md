@@ -128,6 +128,114 @@ DELETE FROM table_name [WHERE Clause]
 ```
 delete，drop，truncate 都有删除表的作用，区别在于：
 
- 1、delete 和 truncate 仅仅删除表数据，drop 连表数据和表结构一起删除
- 2、delete 是 DML 语句，操作完以后如果没有不想提交事务还可以回滚，truncate 和 drop 是 DDL 语句，操作完马上生效，不能回滚
- 3、执行的速度上，drop>truncate>delete
+1、delete 和 truncate 仅仅删除表数据，drop 连表数据和表结构一起删除
+2、delete 是 DML 语句，操作完以后如果没有不想提交事务还可以回滚，truncate 和 drop 是 DDL 语句，操作完马上生效，不能回滚
+3、执行的速度上，drop>truncate>delete
+
+17. like关键字
+```
+like 匹配/模糊匹配，会与 % 和 _ 结合使用。
+
+'%a'     //以a结尾的数据
+'a%'     //以a开头的数据
+'%a%'    //含有a的数据
+'_a_'    //三位且中间字母是a的
+'_a'     //两位且结尾字母是a的
+'a_'     //两位且开头字母是a的
+查询以 java 字段开头的信息。
+
+SELECT * FROM position WHERE name LIKE 'java%';
+查询包含 java 字段的信息。
+
+SELECT * FROM position WHERE name LIKE '%java%';
+查询以 java 字段结尾的信息。
+
+SELECT * FROM position WHERE name LIKE '%java';
+```
+
+18. union关键字
+union关键字，会把从表a和表b查询出来的字段，进行去重展示
+```
+mysql> SELECT * FROM Websites;
++----+--------------+---------------------------+-------+---------+
+| id | name         | url                       | alexa | country |
++----+--------------+---------------------------+-------+---------+
+| 1  | Google       | https://www.google.cm/    | 1     | USA     |
+| 2  | 淘宝          | https://www.taobao.com/   | 13    | CN      |
+| 3  | 菜鸟教程      | http://www.runoob.com/    | 4689  | CN      |
+| 4  | 微博          | http://weibo.com/         | 20    | CN      |
+| 5  | Facebook     | https://www.facebook.com/ | 3     | USA     |
+| 7  | stackoverflow | http://stackoverflow.com/ |   0 | IND     |
++----+---------------+---------------------------+-------+---------+
+
+mysql> SELECT * FROM apps;
++----+------------+-------------------------+---------+
+| id | app_name   | url                     | country |
++----+------------+-------------------------+---------+
+|  1 | QQ APP     | http://im.qq.com/       | CN      |
+|  2 | 微博 APP | http://weibo.com/       | CN      |
+|  3 | 淘宝 APP | https://www.taobao.com/ | CN      |
++----+------------+-------------------------+---------+
+3 rows in set (0.00 sec)
+
+
+SELECT country FROM Websites UNION SELECT country FROM apps ORDER BY country;
++---------+
+| country |
++---------+
+| USA     |
+| IND     |
+| CN      |
++---------+
+```
+如果想要从两个表读出全部的country信息且不去重，使用union all
+```
+SELECT country FROM WebsitesUNION ALLSELECT country FROM apps ORDER BY country;
++---------+
+| country |
++---------+
+| USA     |
+| USA     |
+| IND     |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
++---------+
+```
+
+带有where的union语句
+```
+SELECT country, name FROM WebsitesWHERE country='CN'UNION ALL
+	SELECT country, app_name FROM appsWHERE country='CN'ORDER BY 
+	country;
++--------------+---------+
+| name         | country |
++--------------+---------+
+| QQ APP       | CN      |
+| 淘宝          | CN      |
+| 菜鸟教程       | CN      |
+| 微博          | CN      |
+| 微博 APP      | CN      |
+| 淘宝 APP      | CN      |
++--------------+---------+
+
+```
+
+19. 排序 order by
+```
+如果字符集采用的是 gbk(汉字编码字符集)，直接在查询语句后边添加 ORDER BY：
+SELECT * 
+FROM runoob_tbl
+ORDER BY runoob_title;
+
+如果字符集采用的是 utf8(万国码)，需要先对字段进行转码然后排序：
+SELECT * 
+FROM runoob_tbl
+ORDER BY CONVERT(runoob_title using gbk);
+```
+
+20. 
