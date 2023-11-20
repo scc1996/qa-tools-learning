@@ -238,4 +238,69 @@ FROM runoob_tbl
 ORDER BY CONVERT(runoob_title using gbk);
 ```
 
-20. 
+20. 分组group by
+```
+SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;
+```
+使用 WITH ROLLUP
+WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计（SUM,AVG,COUNT…）。
+
+例如我们将以上的数据表按名字进行分组，再统计每个人登录的次数：
+```
+mysql> SELECT name, SUM(signin) as signin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;
++--------+--------------+
+| name   | signin_count |
++--------+--------------+
+| 小丽 |            2 |
+| 小明 |            7 |
+| 小王 |            7 |
+| NULL   |           16 |
++--------+--------------+
+4 rows in set (0.00 sec)
+```
+with rollup，前面执行的是sum操作，所以最后会再执行一次sum，计算总数
+
+其中记录 NULL 表示所有人的登录次数。
+
+我们可以使用 coalesce 来设置一个可以取代 NUll 的名称，coalesce 语法：
+```
+select coalesce(a,b,c);
+参数说明：如果a==null,则选择b；如果b==null,则选择c；如果a!=null,则选择a；如果a b c 都为null ，则返回为null（没意义）。
+
+以下实例中如果名字为空我们使用总数代替：
+
+mysql> SELECT coalesce(name, '总数'), SUM(signin) as signin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;
++--------------------------+--------------+
+| coalesce(name, '总数') | signin_count |
++--------------------------+--------------+
+| 小丽                   |            2 |
+| 小明                   |            7 |
+| 小王                   |            7 |
+| 总数                   |           16 |
++--------------------------+--------------+
+4 rows in set (0.01 sec)
+```
+
+21. as 和 coalesce
+SELECT name, SUM(signin) as signin_count FROM  employee_tbl GROUP BY name WITH ROLLUP; -- sum as signin_count修改的是列名
+SELECT coalesce(name, '总数'), SUM(signin) as signin_count FROM  employee_tbl GROUP BY name WITH ROLLUP; -- coalesce修改的是属性的名称，具体到单元格的内容
+
+22. 连接
+JOIN 按照功能大致分为如下三类：
+（1）INNER JOIN（内连接,或等值连接）：获取两个表中字段匹配关系的记录。
+（2）LEFT JOIN（左连接）：获取左表所有记录，即使右表没有对应匹配的记录。
+（3）RIGHT JOIN（右连接）： 与 LEFT JOIN 相反，用于获取右表所有记录，即使左表没有对应匹配的记录。
+（4）FULL JOIN（全连接）：只要一个表里有，就读出
+（5）CROSS JOIN（笛卡尔连接）：求两表的笛卡尔积 -- A表的每一个元素，叉乘B表的每一个元素 -- A.1,A.2,B.01,B.02 = 1:01,1:02,2:01,2:02
+写sql语句的时候，写在join关键字前面的，就是左表，写在后面的就是右表
+```
+SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
+
+table a -- 表示给table重命名为a
+join的条件使用on
+
+上面的select语句，等价于
+SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a, tcount_tbl b WHERE a.runoob_author = b.runoob_author;
+```
+join和union的区别：
+join用于表的联合；union用于对表联合结果的处理 -- 需要不同表但同名同数据类型的数据的整理，union会去重，不去重使用union all
