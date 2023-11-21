@@ -332,5 +332,29 @@ https://cloud.tencent.com/developer/article/1543335
 B树：B树相对于平衡二叉树，每个节点存储了更多的键值(key)和数据(data)，并且每个节点拥有更多的子节点，子节点的个数一般称为阶，上述图中的B树为3阶B树，高度也会很低。 
 B+树：B+树非叶子节点上是不存储数据的，仅存储键值，而B树节点中不仅存储键值，也会存储数据。之所以这么做是因为在数据库中页的大小是固定的，innodb中页的默认大小是16KB。如果不存储数据，那么就会存储更多的键值，相应的树的阶数（节点的子节点树）就会更大，树就会更矮更胖，如此一来我们查找数据进行磁盘的IO次数有会再次减少，数据查询的效率也会更快。
 
-28. 主键和索引的区别
+总结来说，B树的叶子节点和非叶子节点，都可以储存数据；B+树的非叶子节点，只存储索引，叶子节点才会存储数据；大数查询只要两次IO -- 每个节点中，会存页的数据，读第一个节点，可以知道下一次读哪个节点中的页 -- 有点类似页码的功能。
+
+29. 主键和索引的区别
 主键和索引都是键，不过主键是逻辑键，索引是物理键，意思就是主键不实际存在，而索引实际存在在数据库中，主键一般都要建，主要是用来避免一张表中有相同的记录，索引一般可以不建，但如果需要对该表进行查询操作，则最好建，这样可以加快检索的速度。
+
+30. having的用法
+SELECT column1, aggregate_function(column2)
+FROM table_name
+GROUP BY column1
+HAVING condition;
+参数说明：
+
+column1：要检索的列。
+aggregate_function(column2)：一个聚合函数，例如SUM、COUNT、AVG等，应用于column2的值。
+table_name：要从中检索数据的表。
+GROUP BY column1：根据column1列的值对数据进行分组。
+HAVING condition：一个条件，用于筛选分组的结果。只有满足条件的分组会包含在结果集中。
+
+----- 注意：where后面加的是某一列的条件。having后面写的是行列表达式，需要计算的，计算的语句有比如sum、avr等
+where 和having之后都是筛选条件，但是有区别的：
+1.where在group by前， having在group by 之后
+2.聚合函数（avg、sum、max、min、count），不能作为条件放在where之后，但可以放在having之后
+
+31. distinct的用法
+用于返回唯一不同的值，即去重。
+SELECT DISTINCT country FROM Websites;
