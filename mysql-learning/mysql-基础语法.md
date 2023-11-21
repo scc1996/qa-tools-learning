@@ -358,3 +358,12 @@ where 和having之后都是筛选条件，但是有区别的：
 31. distinct的用法
 用于返回唯一不同的值，即去重。
 SELECT DISTINCT country FROM Websites;
+
+32. 常用语句
+```
+查询一组数中，出现一次的最大的数
+select max(num) as num from (select num from table_name group by num having count(num) = 1);
+
+首先找到只出现一次 -- group by num having count(num) = 1
+再找到最大的 -- max（num）
+```
