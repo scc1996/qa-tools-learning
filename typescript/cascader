@@ -1,0 +1,19 @@
+1. 级联选择器，同时获取label和value的值
+<Cascader
+    multiple={false}
+    options={options}
+    onChange={onChange}
+    showSearch={{filter,}}
+/>
+
+这里的onChange方法，可以定义为onChange = (value: string[], selectedOptions: any)，然后解析selectedOptions，同时获取value和label
+  const onChange = (value: string[], selectedOptions: any) => {
+    updateBindFormObject({
+      scene_info: {
+        scene_valid: true,
+        scene_value: value?.length > 0 ? value[2] : '',
+        scene_desc: selectedOptions?.length > 0 ? selectedOptions[2].label : '',
+        service_type: value?.length > 0 ? Number(value[1]) : 0,
+      },
+    });
+  };
