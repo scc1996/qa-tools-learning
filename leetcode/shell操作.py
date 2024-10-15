@@ -1,4 +1,4 @@
-写一个 bash 脚本以统计一个文本文件 words.txt 中每个单词出现的
+1. 写一个 bash 脚本以统计一个文本文件 words.txt 中每个单词出现的
 频率
 。
 
@@ -24,3 +24,8 @@ cat Words.txt| tr -s ' ' '\n' | sort | uniq -c | sort -r
 
 cat Words.txt| tr -s ' ' '\n' | sort | uniq -c | sort -r | awk '{print $2, $1}'
 - awk '{print $2, $1}': 输出，awk为文本处理工具，特别适用于处理结构化文本。print是awk的内置函数，会把位置2、位置1的数据输出
+
+
+
+2. 输出满足条件的电话号码
+正则表达式：^表示字符串开头，$表示字符串结束。
